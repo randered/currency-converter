@@ -1,0 +1,30 @@
+# Build output
+target/
+*.jar
+*.war
+*.ear
+
+# IDE - IntelliJ
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# IDE - Eclipse / VS Code
+.classpath
+.project
+.settings/
+.vscode/
+*.class
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Env / local config (keep secrets out of git)
+.env
+*.local

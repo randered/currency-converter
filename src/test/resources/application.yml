@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    # URL/credentials are injected by @ServiceConnection (Testcontainers).
+    url: jdbc:postgresql://localhost:5432/test
+    username: test
+    password: test
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+  cache:
+    type: caffeine
+    caffeine:
+      spec: expireAfterWrite=60s, maximumSize=10000
+
+fx:
+  provider:
+    base-url: http://localhost:1/unused
+    connect-timeout-ms: 1000
+    read-timeout-ms: 1000

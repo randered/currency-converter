@@ -1,0 +1,48 @@
+server:
+  port: ${SERVER_PORT:8080}
+
+spring:
+  application:
+    name: currency-converter
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/currency_converter}
+    username: ${DB_USERNAME:currency}
+    password: ${DB_PASSWORD:currency}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+  cache:
+    type: caffeine
+    caffeine:
+      spec: expireAfterWrite=${FX_CACHE_TTL_SECONDS:60}s, maximumSize=10000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+fx:
+  provider:
+    base-url: ${FX_PROVIDER_BASE_URL:https://open.er-api.com/v6}
+    connect-timeout-ms: ${FX_PROVIDER_CONNECT_TIMEOUT_MS:3000}
+    read-timeout-ms: ${FX_PROVIDER_READ_TIMEOUT_MS:5000}
+
+conversions:
+  fail-fast-if-in-progress: ${CONVERSIONS_RETURN_IN_PROGRESS:false}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
