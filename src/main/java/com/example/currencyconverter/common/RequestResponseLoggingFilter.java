@@ -31,7 +31,7 @@ public class RequestResponseLoggingFilter extends OncePerRequestFilter {
         if (query != null) {
             path = path + "?" + query;
         }
-        String clientId = request.getHeader(Constants.HEADER_CLIENT_ID);
+        String clientId = resolveClientId(request);
 
         log.info(LogMessages.REQUEST_ENTRY, method, path, clientId);
         try {
@@ -40,5 +40,19 @@ public class RequestResponseLoggingFilter extends OncePerRequestFilter {
             log.info(LogMessages.REQUEST_EXIT, method, path, response.getStatus(),
                     System.currentTimeMillis() - start);
         }
+    }
+
+    private String resolveClientId(HttpServletRequest request) {
+        String fromHeader = request.getHeader(Constants.HEADER_CLIENT_ID);
+        if (fromHeader != null) {
+            return fromHeader;
+        }
+        String[] segments = request.getRequestURI().split("/");
+        for (int i = 0; i < segments.length - 1; i++) {
+            if ("clients".equals(segments[i])) {
+                return segments[i + 1];
+            }
+        }
+        return request.getParameter("clientId");
     }
 }

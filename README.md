@@ -120,7 +120,7 @@ curl "http://localhost:8080/clients/CLIENT-001/balances"
 
 ### Errors
 
-Errors come back in the same shape with a machine-readable `code`:
+Errors come back in the same shape with `code`:
 
 ```json
 { "code": "INSUFFICIENT_FUNDS", "message": "Insufficient funds in source currency balance", "timestamp": "..." }
@@ -154,7 +154,7 @@ locks, no retry logic, no lock-ordering deadlocks when two clients convert in
 opposite directions. The lock is on the client, not the currency pair, so all of
 a client's balances stay consistent.
 
-By default a second request for the same client just waits for the first one to
+By default, a second request for the same client just waits for the first one to
 finish. If you'd rather it fail fast, set `CONVERSIONS_RETURN_IN_PROGRESS=true`
 (`conversions.return-in-progress` in the yaml) — then it returns a 409
 (`CONVERSION_IN_PROGRESS`) instead of waiting. Same-idempotency-key replays are
@@ -210,4 +210,5 @@ touches the schema — Flyway is the single source of truth.
 The integration test boots an actual Postgres 16 via Testcontainers
 (`@ServiceConnection`) instead of H2. Testing against the real thing also means the constraints,
 migrations, and timestamps handling actually get exercised.
+
 ---
