@@ -46,7 +46,8 @@ for the Docker setup.
 | `FX_CACHE_TTL_SECONDS` | `60` | How long rates are cached |
 | `CONVERSIONS_RETURN_IN_PROGRESS` | `false` | When true, a conversion request for a client that's already converting returns a 409 instead of waiting |
 
-Demo clients seeded by `V2__seed_demo_clients.sql`:
+Demo clients seeded by the Flyway migrations (`V2__seed_demo_clients.sql` +
+`V3__add_demo_client_003.sql`):
 
 | Client id | Balances |
 | --- | --- |
