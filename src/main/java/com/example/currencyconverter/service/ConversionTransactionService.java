@@ -89,8 +89,7 @@ public class ConversionTransactionService {
                 .rate(rate.rate())
                 .idempotencyKey(idempotencyKey)
                 .build();
-        // saveAndFlush so the DB default timestamp is populated for the response.
-        conversionRepository.saveAndFlush(record);
+        conversionRepository.save(record);
         log.info(LogMessages.EXECUTE_PERSISTED, clientId, record.getTransactionId());
 
         return record;
