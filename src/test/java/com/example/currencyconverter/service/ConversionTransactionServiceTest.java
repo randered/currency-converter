@@ -58,7 +58,7 @@ class ConversionTransactionServiceTest {
         when(rateService.getRate("USD", "EUR")).thenReturn(
                 new RateResponse("USD", "EUR", new BigDecimal("0.85"), Instant.now()));
         when(balanceRepository.findByClientIdAndCurrency("CLIENT-001", "EUR")).thenReturn(Optional.of(eur));
-        when(conversionRepository.saveAndFlush(any())).thenAnswer(inv -> inv.getArgument(0));
+        when(conversionRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
 
         ConversionRecord record = service.executeConversion(
                 "CLIENT-001", null, "USD", "EUR", new BigDecimal("100.00"));
@@ -67,7 +67,7 @@ class ConversionTransactionServiceTest {
         assertThat(record.getTargetAmount()).isEqualByComparingTo("85.00");
         assertThat(usd.getAmount()).isEqualByComparingTo("900.00");
         assertThat(eur.getAmount()).isEqualByComparingTo("85.00");
-        verify(conversionRepository).saveAndFlush(any(ConversionRecord.class));
+        verify(conversionRepository).save(any(ConversionRecord.class));
     }
 
     @Test
@@ -84,7 +84,7 @@ class ConversionTransactionServiceTest {
                 .extracting(e -> ((ApiException) e).getErrorCode())
                 .isEqualTo(ErrorCode.INSUFFICIENT_FUNDS);
 
-        verify(conversionRepository, never()).saveAndFlush(any());
+        verify(conversionRepository, never()).save(any());
         assertThat(usd.getAmount()).isEqualByComparingTo("10.00");
     }
 
@@ -130,6 +130,6 @@ class ConversionTransactionServiceTest {
                 "CLIENT-001", "key-1", "USD", "EUR", new BigDecimal("100.00"));
 
         assertThat(result).isSameAs(existing);
-        verify(conversionRepository, never()).saveAndFlush(any());
+        verify(conversionRepository, never()).save(any());
     }
 }
